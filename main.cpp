@@ -7,7 +7,7 @@ int main()
     printf("%f\n", t[0]);
     float4 a = float4(1);
     float4 b = {5};
-    float4 c = a * b;
+    float4 c = a * b + a;
     c += a;
     printf("%f %f %f %f\n", c.x(), c.y(), c.z(), c.w());
     return 0;
