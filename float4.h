@@ -36,99 +36,103 @@ public:
         }
 #endif
 
-    float4
-    operator+(const float4 &rhs) const
-    {
+        float4
+        operator+(const float4 &rhs) const
+        {
 #if defined(__ARM_NEON) || defined(__ARM_NEON__)
-        return float4(vaddq_f32(v, rhs.v));
+                return float4(vaddq_f32(v, rhs.v));
 #else
                 return float4(_mm_add_ps(v, rhs.v));
 #endif
-    }
+        }
 
-    float4
-    operator-(const float4 &rhs) const
-    {
+        float4
+        operator-(const float4 &rhs) const
+        {
 #if defined(__ARM_NEON) || defined(__ARM_NEON__)
-        return float4(vsubq_f32(v, rhs.v));
+                return float4(vsubq_f32(v, rhs.v));
 #else
-        return float4(_mm_sub_ps(v, rhs.v));
+                return float4(_mm_sub_ps(v, rhs.v));
 #endif
-    }
+        }
 
-    float4
-    operator*(const float4 &rhs) const
-    {
+        float4
+        operator*(const float4 &rhs) const
+        {
 #if defined(__ARM_NEON) || defined(__ARM_NEON__)
-        return float4(vmulq_f32(v, rhs.v));
+                return float4(vmulq_f32(v, rhs.v));
 #else
-        return float4(_mm_mul_ps(v, rhs.v));
+                return float4(_mm_mul_ps(v, rhs.v));
 #endif
-    }
+        }
 
-    float4
-    operator/(const float4 &rhs) const
-    {
+        float4
+        operator/(const float4 &rhs) const
+        {
 #if defined(__ARM_NEON) || defined(__ARM_NEON__)
-        return float4(vdivq_f32(v, rhs.v));
+                return float4(vdivq_f32(v, rhs.v));
 #else
-        return float4(_mm_div_ps(v, rhs.v));
+                return float4(_mm_div_ps(v, rhs.v));
 #endif
-    }
+        }
 
-    float4 &operator+=(const float4 &rhs)
-    {
+        float4 &operator+=(const float4 &rhs)
+        {
 #if defined(__ARM_NEON) || defined(__ARM_NEON__)
-        v = vaddq_f32(v, rhs.v);
+                v = vaddq_f32(v, rhs.v);
 #else
-        v = _mm_add_ps(v, rhs.v);
+                v = _mm_add_ps(v, rhs.v);
 #endif
-        return *this;
-    }
+                return *this;
+        }
 
-    template<unsigned i>
-float vectorGetByIndex( __m128 V) {
-    union {
-        __m128 v;    
-        float a[4];  
-    } converter;
-    converter.v = V;
-    return converter.a[i];
-}
+#ifndef __ARM_NEON
+        template <unsigned i>
+        float vectorGetByIndex(__m128 V)
+        {
+                union
+                {
+                        __m128 v;
+                        float a[4];
+                } converter;
+                converter.v = V;
+                return converter.a[i];
+        }
+#endif
 
-    float x()
-    {
+        float x()
+        {
 #if defined(__ARM_NEON) || defined(__ARM_NEON__)
-        return vgetq_lane_f32(v, 0);
+                return vgetq_lane_f32(v, 0);
 #else
-        return vectorGetByIndex<0>(v);
+                return vectorGetByIndex<0>(v);
 #endif
-    }
+        }
 
-    float y()
-    {
+        float y()
+        {
 #if defined(__ARM_NEON) || defined(__ARM_NEON__)
-        return vgetq_lane_f32(v, 1);
+                return vgetq_lane_f32(v, 1);
 #else
-        return vectorGetByIndex<1>(v);
+                return vectorGetByIndex<1>(v);
 #endif
-    }
+        }
 
-    float z()
-    {
+        float z()
+        {
 #if defined(__ARM_NEON) || defined(__ARM_NEON__)
-        return vgetq_lane_f32(v, 2);
+                return vgetq_lane_f32(v, 2);
 #else
-        return vectorGetByIndex<2>(v);
+                return vectorGetByIndex<2>(v);
 #endif
-    }
+        }
 
-    float w()
-    {
+        float w()
+        {
 #if defined(__ARM_NEON) || defined(__ARM_NEON__)
-        return vgetq_lane_f32(v, 3);
+                return vgetq_lane_f32(v, 3);
 #else
-        return vectorGetByIndex<3>(v);
+                return vectorGetByIndex<3>(v);
 #endif
-    }
+        }
 };
